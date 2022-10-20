@@ -12,27 +12,25 @@ myEmitter.on('read', (cb) => {
 
 		myEmitter.emit('show', data);
 
-		// cb(data);
+		cb(data);
 	});
 });
 
 // Show
 myEmitter.on('show', (data) => {
-	console.log('===========');
+	console.log('==== [File Data] ====');
 	console.log(data);
-	console.log('===========');
+	console.log('==== [End] ====');
 });
 
 app.get('/', async (req, res) => {
-	myEmitter.emit('read');
-	// const data = await new Promise(resolve => {
-	// })
-	// console.log('sss', data)
+  const fileContent = await new Promise(resolve => {
+    myEmitter.emit('read', resolve);
+  })
 
-	res.status(200).json({
-		message: 'test',
-	});
-	// res.status(200).json(data.toJSON());
+  res.status(200).json({
+    content: fileContent.toString()
+  });
 });
 
 const PORT = process.env.PORT || 8888;
