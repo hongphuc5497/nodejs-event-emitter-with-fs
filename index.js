@@ -1,7 +1,13 @@
-const EventEmitter = require('node:events');
 const app = require('express')();
+const EventEmitter = require('node:events');
+
+const myEmitter = new EventEmitter();
+myEmitter.on('call', () => {
+  console.log('Calling emitter')
+})
 
 app.get('/', (req, res) => {
+  myEmitter.emit('call')
   res.status(200).json({
     message: 'test'
   })
